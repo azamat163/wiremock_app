@@ -30,4 +30,4 @@ http://localhost:8080/test
 Спасибо, что дочитали до конца :+1:
 
 Контакты для связи:
-  Skype: oracle_exe
+Skype: oracle_exe
