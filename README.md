@@ -1,5 +1,5 @@
 # wiremock_app
-wiremock_app - это андроид приложение для передачи смс с определенного получателя  на сервер wiremock.
+wiremock_app - это андроид приложение для передачи SMS сообщений с определенного получателя  на сервер wiremock.
 
 ### Настройка wiremock - сервера
 * Скачать wiremock - сервер по [ссылке](http://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-standalone/2.1.7/wiremock-standalone-2.1.7.jar)
