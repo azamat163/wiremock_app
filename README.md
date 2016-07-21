@@ -13,7 +13,7 @@ java -jar wiremock-standalone-2.1.7.jar --port 9999
 ```
 * Для проверки успешного запуска сервера нужно выполнить команду: 
 ```
-http://localhost:8080/__admin
+http://localhost:9999/__admin
 ```
 Оффициальный сайт wiremock: [ссылка](http://wiremock.org/docs/) 
 
@@ -23,7 +23,7 @@ http://localhost:8080/__admin
 * server port - это порт, под которым запустили wiremock сервер, например ```9999```
 * PATH - это путь куда будет приходить данные, например можно задать ```/test```, то соответственно  url будет следующим:
 ```
-http://localhost:8080/test
+http://localhost:9999/test
 ```
 * receiver - это отправитель, по которому будет считываться смс, например ```github```
 
