@@ -44,7 +44,10 @@
         android:singleLine="true"
         android:layout_below="@+id/editText4"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="29dp"
+        android:layout_alignRight="@+id/editText4"
+        android:layout_alignEnd="@+id/editText4" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -61,7 +64,9 @@
         android:id="@+id/editText4"
         android:hint="Please enter receiver"
         android:layout_below="@+id/editText3"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignRight="@+id/editText3"
+        android:layout_alignEnd="@+id/editText3" />
 
 </RelativeLayout>

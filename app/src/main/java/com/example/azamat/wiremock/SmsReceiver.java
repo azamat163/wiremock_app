@@ -28,7 +28,10 @@ public class SmsReceiver extends BroadcastReceiver
             msgs = new SmsMessage[pdus.length];
             for (int i=0; i<msgs.length; i++) {
                 msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
-                phone = msgs[i].getOriginatingAddress ();
+                phone = msgs[i].getOriginatingAddress();
+                Log.d(LOG_TAG,"smsnumber " + phone);
+                Log.d(LOG_TAG,"smsmessage " + msgs[i].getMessageBody().toString());
+                Log.d(LOG_TAG, "receiver " + phoneNumber);
                 if (phoneNumber.equals(phone)) {
                     messageReceived += msgs[i].getMessageBody().toString();
                     messageReceived += "\n";
