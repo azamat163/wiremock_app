@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
+    public static final String MODE_TT = "tt";
     private static String TAG = "MainActivity";
     private static String sms = "";
     public static String editText1;
@@ -25,7 +26,9 @@ public class MainActivity extends Activity {
     public static String text2;
     public static String text3;
     public static String text4;
+
     Button but;
+    Button butClean;
     EditText edit1;
     EditText edit2;
     EditText edit3;
@@ -46,71 +49,107 @@ public class MainActivity extends Activity {
         edit3 = (EditText) findViewById(R.id.editText3);
         edit4 = (EditText) findViewById(R.id.editText4);
         but = (Button) findViewById(R.id.button);
+        //butClean = (Button) findViewById(R.id.button2);
         but.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
+                SharedPreferences  pref = getSharedPreferences("main", MODE_PRIVATE);
+                Editor editPref = pref.edit();
+
                 text1 = edit1.getText().toString();
                 if (!text1.isEmpty()) {
-                    SharedPreferences pref1 = getSharedPreferences("main", MODE_PRIVATE);
-                    Editor editPref1 = pref1.edit();
-                    editPref1.putString("edit1", text1);
-                    editPref1.commit();
+                    editPref.putString("edit1", text1);
                 }
 
                 text2 = edit2.getText().toString();
                 if (!text2.isEmpty()) {
-                    SharedPreferences pref2 = getSharedPreferences("main", MODE_PRIVATE);
-                    Editor editPref2 = pref2.edit();
-                    editPref2.putString("edit2", text2);
-                    editPref2.commit();
+                    editPref.putString("edit2", text2);
                 }
 
                 text3 = edit3.getText().toString();
                 if (!text3.isEmpty()) {
-                    SharedPreferences pref3 = getSharedPreferences("main", MODE_PRIVATE);
-                    Editor editPref3 = pref3.edit();
-                    editPref3.putString("edit3", text3);
-                    editPref3.commit();
+                    editPref.putString("edit3", text3);
                 }
 
                 text4 = edit4.getText().toString();
                 if (!text4.isEmpty()) {
-                    SharedPreferences pref4 = getSharedPreferences("main", MODE_PRIVATE);
-                    Editor editPref4 = pref4.edit();
-                    editPref4.putString("edit4", text4);
-                    editPref4.commit();
+                    editPref.putString("edit4", text4);
+                }
+                editPref.commit();
+                Log.d(TAG, "host " + text1);
+                Log.d(TAG, "port " + text2);
+                Log.d(TAG, "path " + text3);
+                Log.d(TAG, "receiver " + text4);
+
+                if (text1.isEmpty() || text2.isEmpty() || text3.isEmpty() || text4.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Не заполнены все поля!", Toast.LENGTH_LONG).show();
                 }
 
-                Log.d(TAG, "Text1 " + text1);
-                Log.d(TAG, "Text2 " + text2);
-                Log.d(TAG, "Text3 " + text3);
-                Log.d(TAG, "Text4 " + text4);
-                if (text1.isEmpty() || text2.isEmpty() || text3.isEmpty() || text4.isEmpty())
-                    Toast.makeText(getApplicationContext(), "Не заполнены все поля!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Введенные значения сохранены!", Toast.LENGTH_LONG).show();
+            }
+
+
+        });
+        SharedPreferences  pref = getSharedPreferences("main", MODE_PRIVATE);
+        editText1 = pref.getString("edit1", "").toString();
+        if (!editText1.isEmpty()) {
+            edit1.setText(editText1);
+      }
+        editText2 = pref.getString("edit2", "").toString();
+        if (!editText2.isEmpty()) {
+            edit2.setText(editText2);
+        }
+
+        editText3 = pref.getString("edit3", "").toString();
+        if (!editText3.isEmpty()) {
+            edit3.setText(editText3);
+        }
+        editText4 = pref.getString("edit4", "").toString();
+        if (!editText4.isEmpty()) {
+            edit4.setText(editText4);
+        }
+
+        Log.d(TAG, "host " + editText1);
+        Log.d(TAG, "port " + editText2);
+        Log.d(TAG, "path " + editText3);
+        Log.d(TAG, "receiver " + editText4);
+
+
+
+/*
+       butClean.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 SharedPreferences pref = getSharedPreferences("main", MODE_PRIVATE);
-                editText1 = pref.getString("edit1", "").toString();
-                edit1.setText(editText1);
-                editText2 = pref.getString("edit2", "").toString();
-                edit2.setText(editText2);
-                editText3 = pref.getString("edit3", "").toString();
-                edit3.setText(editText3);
-                editText4 = pref.getString("edit4", "").toString();
-                edit4.setText(editText4);
-
-                Log.d(TAG, "editText1 " + editText1);
-                Log.d(TAG, "editText2 " + editText2);
-                Log.d(TAG, "editText3 " + editText3);
-                Log.d(TAG, "editText4 " + editText4);
-
+                Editor edit = pref.edit();
+                 edit.remove("edit1");
+                 edit.remove("edit2");
+                 edit.remove("edit3");
+                 edit.remove("edit4");
+                 edit.commit();
+                Toast.makeText(getApplicationContext(), "Успешно очищены поля!", Toast.LENGTH_LONG).show();
             }
         });
-
-
+*/
+    try{
         if (!sms.isEmpty()) {
-            Intent msgIntent = new Intent(MainActivity.this, IntentServiceTA.class);
+            //Intent i = new Intent();
+          // i.setAction("com.example.azamat.wiremock.phone");
+          //  i.putExtra(MODE_TT, editText4);
+          //  sendBroadcast(i);
+
+            Intent msgIntent = new Intent(this, IntentServiceTA.class);
+            msgIntent.putExtra("edit1", editText1);
+            msgIntent.putExtra("edit2", editText2);
+            msgIntent.putExtra("edit3", editText3);
             startService(msgIntent);
         }
+
+    }catch(Exception e) {
+        e.printStackTrace();
     }
+}
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -133,5 +172,6 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 }

@@ -14,7 +14,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
+import android.widget.Toast;
 
 
 /**
@@ -25,19 +25,13 @@ import android.net.NetworkInfo;
  * helper methods.
  */
 public class IntentServiceTA extends IntentService {
-    public static final String HOST = MainActivity.editText1;
-    public static final Integer PORT = Integer.parseInt(MainActivity.editText2);
-    public static final String PATH = MainActivity.editText3;
+    public  final String HOST = MainActivity.text1;
+    public  final Integer PORT = Integer.parseInt(MainActivity.text2);
+    public  final String PATH = MainActivity.text3;
    //public static final String PROTOCOL = "http";
 
-    private static String sms = "";
+    private String sms;
     private static String TAG = "IntentServiceTA";
-
-
-
-    public static void setSMSGetails( String SMSBody) {
-        sms = SMSBody;
-    }
 
 
     public IntentServiceTA() {
@@ -51,15 +45,21 @@ public class IntentServiceTA extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-       // String host = intent.getStringExtra(HOST);
-    //  String path = intent.getStringExtra(PATH);
-       //int port = intent.getIntExtra("port", PORT);
-       //String http = intent.getStringExtra(PROTOCOL);
+     // HOST = intent.getStringExtra("edit1");
+    //  PORT = intent.getIntExtra("edit2",8888);
+    //  PATH = intent.getStringExtra("edit3");
+      sms = intent.getStringExtra("smsIntent");
         try {
             if (!sms.isEmpty() && !HOST.isEmpty() && !PATH.isEmpty() && PORT != null) {
-                startServer();
+                Log.d(TAG, "sms:  " + sms);
+                Log.d(TAG, "host:  " + HOST);
+                Log.d(TAG, "port:  " + PORT);
+                Log.d(TAG, "PATH:  " + PATH);
                 try {
-                    if (isConnected()) {
+                    ConnectivityManager connMgr = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+                    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                    if (networkInfo != null && networkInfo.isConnected()) {
+                        startServer();
                         Log.d(TAG, "Inside DoBackground");
                         URL url = new URL("http", HOST, PORT, PATH);
                         URLConnection conn = url.openConnection();
@@ -76,7 +76,8 @@ public class IntentServiceTA extends IntentService {
                         }
                         Log.d(TAG, "After request");
                         Log.d(TAG, "Returned String " + sb.toString());
-                    }
+                    }else
+                        Toast.makeText(getApplicationContext(),"Turn on Wi-Fi",Toast.LENGTH_LONG).show();
                 }
                 catch (Exception e) {
                     Log.e(TAG, "Exception occurred " + e);
@@ -91,7 +92,7 @@ public class IntentServiceTA extends IntentService {
 
     }
 
-    private  void startServer() {
+    private   void startServer() {
         try {
             WireMock.configureFor(HOST, PORT);
             stubFor(get(urlEqualTo(PATH))

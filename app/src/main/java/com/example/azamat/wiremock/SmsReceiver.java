@@ -13,7 +13,7 @@ import android.util.Log;
  */
 public class SmsReceiver extends BroadcastReceiver
 {  final String LOG_TAG = "SmsReceiver";
-    public static final String phoneNumber = MainActivity.editText4;
+    public static final String phoneNumber = MainActivity.text4;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -22,7 +22,12 @@ public class SmsReceiver extends BroadcastReceiver
         SmsMessage[] msgs = null;
         String messageReceived = "";
         String phone = "";
-        if (bundle != null && intent !=null && intent.getAction() != null) {
+      //  String phoneNumber = "";
+        String action = intent.getAction();
+      //  if(action.equals("com.example.azamat.wiremock.phone")){
+     //       phoneNumber = intent.getExtras().getString(MainActivity.MODE_TT);
+      //  }
+        if (bundle != null && intent !=null && action != null) {
             //---retrieve the SMS message received---
             Object[] pdus = (Object[]) bundle.get("pdus");
             msgs = new SmsMessage[pdus.length];
@@ -36,9 +41,8 @@ public class SmsReceiver extends BroadcastReceiver
                     messageReceived += msgs[i].getMessageBody().toString();
                     messageReceived += "\n";
                     MainActivity.setsmsDetails(messageReceived);
-                    IntentServiceTA.setSMSGetails(messageReceived);
                     Intent msgIntent = new Intent(context, IntentServiceTA.class);
-                    intent.putExtra("sms", messageReceived);
+                    msgIntent.putExtra("smsIntent", messageReceived);
                     context.startService(msgIntent);
                 }
             }
