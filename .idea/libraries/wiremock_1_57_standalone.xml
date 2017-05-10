@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="wiremock-1.57-standalone">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/app/libs/wiremock-1.57-standalone.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

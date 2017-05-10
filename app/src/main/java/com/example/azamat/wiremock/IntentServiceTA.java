@@ -2,19 +2,22 @@ package com.example.azamat.wiremock;
 
 import android.app.IntentService;
 import android.content.Intent;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import com.github.tomakehurst.wiremock.client.WireMock;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.github.tomakehurst.wiremock.client.WireMock;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.widget.Toast;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 
 /**
@@ -25,7 +28,7 @@ import android.widget.Toast;
  * helper methods.
  */
 public class IntentServiceTA extends IntentService {
-    public  final String HOST = MainActivity.text1;
+  //  public  final String HOST = MainActivity.text1;
     public  final Integer PORT = Integer.parseInt(MainActivity.text2);
     public  final String PATH = MainActivity.text3;
    //public static final String PROTOCOL = "http";
@@ -50,9 +53,9 @@ public class IntentServiceTA extends IntentService {
     //  PATH = intent.getStringExtra("edit3");
       sms = intent.getStringExtra("smsIntent");
         try {
-            if (!sms.isEmpty() && !HOST.isEmpty() && !PATH.isEmpty() && PORT != null) {
+            if (!sms.isEmpty()  && !PATH.isEmpty() && PORT != null) {
                 Log.d(TAG, "sms:  " + sms);
-                Log.d(TAG, "host:  " + HOST);
+              //  Log.d(TAG, "host:  " + HOST);
                 Log.d(TAG, "port:  " + PORT);
                 Log.d(TAG, "PATH:  " + PATH);
                 try {
@@ -61,7 +64,7 @@ public class IntentServiceTA extends IntentService {
                     if (networkInfo != null && networkInfo.isConnected()) {
                         startServer();
                         Log.d(TAG, "Inside DoBackground");
-                        URL url = new URL("http", HOST, PORT, PATH);
+                        URL url = new URL("http", "127.0.0.1", PORT, PATH);
                         URLConnection conn = url.openConnection();
                         conn.setDoInput(true);
                         conn.setAllowUserInteraction(true);
@@ -94,7 +97,7 @@ public class IntentServiceTA extends IntentService {
 
     private   void startServer() {
         try {
-            WireMock.configureFor(HOST, PORT);
+            WireMock.configureFor("127.0.0.1", PORT);
             stubFor(get(urlEqualTo(PATH))
                     .willReturn(aResponse()
                             .withStatus(200)
@@ -103,6 +106,7 @@ public class IntentServiceTA extends IntentService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Log.d(TAG, "sending code...");
         Log.d(TAG, "sms:  " + sms);
     }
 

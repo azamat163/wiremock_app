@@ -30,7 +30,14 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile("com.github.tomakehurst:wiremock:2.6.0"){
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+        exclude group: 'asm', module: 'asm'
+        exclude group: 'org.json', module: 'json'
+        exclude group: 'org.ow2.asm', module: 'asm'
+    }
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:support-v4:24.2.1'
+    compile 'com.android.support:support-v4:22.2.0'
+    compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
 }
 
